@@ -5,7 +5,7 @@ import sys
 import logging
 import operator
 from collections import deque
-from StringIO import StringIO
+from io import StringIO
 from optparse import OptionParser
 
 import Image
@@ -35,7 +35,7 @@ def magnitude(a):
 def normalize(a):
     mag = magnitude(a)
     assert mag > 0, "Cannot normalize a zero-length vector"
-    return tuple(map(operator.div, a, [mag]*len(a)))
+    return tuple(map(operator.truediv, a, [mag]*len(a)))
     
                            
 
@@ -96,7 +96,7 @@ def joined_edges(assorted_edges, keep_every_point=False):
                     piece = []
                 break
         else:
-            raise Exception, "Failed to find connecting edge"
+            raise Exception("Failed to find connecting edge")
     return pieces
 
 
@@ -207,7 +207,7 @@ def rgba_image_to_svg_contiguous(im, opaque=None, keep_every_point=False):
 def png_to_svg(filename, contiguous=None, opaque=None, keep_every_point=None):
     try:
         im = Image.open(filename)
-    except IOError, e:
+    except IOError as e:
         sys.stderr.write('%s: Could not open as image file\n' % filename)
         sys.exit(1)
     im_rgba = im.convert('RGBA')
@@ -235,4 +235,4 @@ if __name__ == "__main__":
         log.setLevel(logging.ERROR)
 
     assert len(args) == 1, "Usage: %s [FILE]"
-    print png_to_svg(args[0], contiguous=options.contiguous, opaque=options.opaque, keep_every_point=options.keep_every_point)
+    print(png_to_svg(args[0], contiguous=options.contiguous, opaque=options.opaque, keep_every_point=options.keep_every_point))
