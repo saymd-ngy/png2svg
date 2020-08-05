@@ -8,7 +8,7 @@ from collections import deque
 from io import StringIO
 from optparse import OptionParser
 
-import Image
+from PIL import Image
 
 
 
